@@ -24,7 +24,7 @@
             type="text"
             placeholder="Password"
             id="password"
-            class="flex-auto p-3 rounded-lg bg-slate-200 focus:bg-blue-600/10"
+            class="flex-auto p-3 pr-12 rounded-lg bg-slate-200 focus:bg-blue-600/10"
             v-model="password"
           />
           <button
@@ -37,6 +37,20 @@
             <icon-copy v-else />
           </button>
         </div>
+        <label for="passwordStrength">
+          Strength: {{ passwordStrength.description }}
+        </label>
+        <meter
+          min="20"
+          max="100"
+          low="60"
+          high="80"
+          optimum="100"
+          :value="passwordStrength.score * 20"
+          title="Password strength"
+          class="w-full"
+          id="passwordStrength"
+        />
         <div class="flex flex-col gap-2">
           <label for="length">Length: {{ length }}</label>
           <input
@@ -123,6 +137,10 @@ export default {
       numbers: true,
       isCopyDone: false,
       isCopyDisabled: true,
+      passwordStrength: {
+        score: 0,
+        description: "",
+      },
     };
   },
   methods: {
@@ -148,10 +166,44 @@ export default {
         setTimeout(() => (this.isCopyDone = false), 500);
       });
     },
+    evaluatePasswordStrength(password) {
+      let strength = 0;
+
+      if (password.length >= 8) {
+        strength += 1;
+      }
+
+      if (/[A-Z]/.test(password)) {
+        strength += 1;
+      }
+
+      if (/[a-z]/.test(password)) {
+        strength += 1;
+      }
+
+      if (/[0-9]/.test(password)) {
+        strength += 1;
+      }
+
+      if (/[!@#$%^&*()]/.test(password)) {
+        strength += 1;
+      }
+
+      this.passwordStrength.score = strength;
+
+      if (strength < 3) {
+        this.passwordStrength.description = "Weak";
+      } else if (strength < 4) {
+        this.passwordStrength.description = "Good";
+      } else {
+        this.passwordStrength.description = "Strong";
+      }
+    },
   },
   watch: {
     password(newPassword) {
       this.isCopyDisabled = newPassword === "";
+      this.evaluatePasswordStrength(newPassword);
     },
   },
 };
