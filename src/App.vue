@@ -37,20 +37,7 @@
             <icon-copy v-else />
           </button>
         </div>
-        <label for="passwordStrength">
-          Strength: {{ passwordStrength.description }}
-        </label>
-        <meter
-          min="20"
-          max="100"
-          low="60"
-          high="80"
-          optimum="100"
-          :value="passwordStrength.score * 20"
-          title="Password strength"
-          class="w-full"
-          id="passwordStrength"
-        />
+        <password-validator :password="password" />
         <div class="flex flex-col gap-2">
           <label for="length">Length: {{ length }}</label>
           <input
@@ -123,10 +110,11 @@
 <script>
 import IconCopy from "./components/icons/IconCopy.vue";
 import IconDone from "./components/icons/IconDone.vue";
+import PasswordValidator from "./components/PasswordValidator.vue";
 
 export default {
   name: "App",
-  components: { IconDone, IconCopy },
+  components: { PasswordValidator, IconDone, IconCopy },
   data() {
     return {
       password: "",
@@ -137,10 +125,6 @@ export default {
       numbers: true,
       isCopyDone: false,
       isCopyDisabled: true,
-      passwordStrength: {
-        score: 0,
-        description: "",
-      },
     };
   },
   methods: {
@@ -166,44 +150,10 @@ export default {
         setTimeout(() => (this.isCopyDone = false), 500);
       });
     },
-    evaluatePasswordStrength(password) {
-      let strength = 0;
-
-      if (password.length >= 8) {
-        strength += 1;
-      }
-
-      if (/[A-Z]/.test(password)) {
-        strength += 1;
-      }
-
-      if (/[a-z]/.test(password)) {
-        strength += 1;
-      }
-
-      if (/[0-9]/.test(password)) {
-        strength += 1;
-      }
-
-      if (/[!@#$%^&*()]/.test(password)) {
-        strength += 1;
-      }
-
-      this.passwordStrength.score = strength;
-
-      if (strength < 3) {
-        this.passwordStrength.description = "Weak";
-      } else if (strength < 4) {
-        this.passwordStrength.description = "Good";
-      } else {
-        this.passwordStrength.description = "Strong";
-      }
-    },
   },
   watch: {
     password(newPassword) {
       this.isCopyDisabled = newPassword === "";
-      this.evaluatePasswordStrength(newPassword);
     },
   },
 };
