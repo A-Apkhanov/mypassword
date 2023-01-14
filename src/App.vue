@@ -50,52 +50,33 @@
           />
         </div>
         <div class="flex flex-col">
-          <div class="flex gap-2 items-center">
-            <input
-              type="checkbox"
-              id="letters"
-              name="letters"
-              v-model="letters"
-              class="w-4 h-4"
-            />
-            <label for="letters">Letters</label>
-          </div>
-          <div class="flex gap-2 items-center">
-            <input
-              type="checkbox"
-              id="case"
-              name="case"
-              v-model="difCase"
-              class="w-4 h-4"
-            />
-            <label for="case">Different case</label>
-          </div>
-          <div class="flex gap-2 items-center">
-            <input
-              type="checkbox"
-              id="marks"
-              name="marks"
-              v-model="marks"
-              class="w-4 h-4"
-            />
-            <label for="marks">Punctuation marks</label>
-          </div>
-          <div class="flex gap-2 items-center">
-            <input
-              type="checkbox"
-              id="numbers"
-              name="numbers"
-              v-model="numbers"
-              class="w-4 h-4"
-            />
-            <label for="numbers">Numbers</label>
-          </div>
+          <app-checkbox
+            name="letters"
+            v-model="params.letters"
+            id="letters"
+            label="Letters"
+          />
+          <app-checkbox
+            name="difCase"
+            v-model="params.difCase"
+            id="difCase"
+            label="Different case"
+          />
+          <app-checkbox
+            name="marks"
+            v-model="params.marks"
+            id="marks"
+            label="Punctuation marks"
+          />
+          <app-checkbox
+            name="numbers"
+            v-model="params.numbers"
+            id="numbers"
+            label="Numbers"
+          />
         </div>
         <div class="flex flex-col gap-1">
-          <app-button
-            type="submit"
-            :disabled="!letters && !marks && !difCase && !numbers"
-          >
+          <app-button type="submit" :disabled="disabledSubmit">
             Generate
           </app-button>
         </div>
@@ -112,28 +93,32 @@ import IconCopy from "./components/icons/IconCopy.vue";
 import IconDone from "./components/icons/IconDone.vue";
 import PasswordValidator from "./components/PasswordValidator.vue";
 import AppButton from "./components/AppButton.vue";
+import AppCheckbox from "./components/AppCheckbox.vue";
 
 export default {
   name: "App",
-  components: { AppButton, PasswordValidator, IconDone, IconCopy },
+  components: { AppCheckbox, AppButton, PasswordValidator, IconDone, IconCopy },
   data() {
     return {
       password: "",
       length: 12,
-      letters: true,
-      difCase: true,
-      marks: true,
-      numbers: true,
       isCopyDone: false,
       isCopyDisabled: true,
+      test: true,
+      params: {
+        letters: true,
+        difCase: true,
+        marks: true,
+        numbers: true,
+      },
     };
   },
   methods: {
     generatePassword() {
-      const numbers = this.numbers ? "0123456789" : "";
-      const letters = this.letters ? "abcdefghijklmnopqrstuvwxyz" : "";
-      const upperLetters = this.difCase ? letters.toUpperCase() : "";
-      const marks = this.marks ? "!@#$%^&*()" : "";
+      const numbers = this.params.numbers ? "0123456789" : "";
+      const letters = this.params.letters ? "abcdefghijklmnopqrstuvwxyz" : "";
+      const upperLetters = this.params.difCase ? letters.toUpperCase() : "";
+      const marks = this.params.marks ? "!@#$%^&*()" : "";
       const chars = numbers + letters + upperLetters + marks;
 
       let password = "";
@@ -150,6 +135,13 @@ export default {
         this.isCopyDone = true;
         setTimeout(() => (this.isCopyDone = false), 500);
       });
+    },
+  },
+  computed: {
+    disabledSubmit() {
+      const test = !Object.values(this.params).filter((value) => value === true)
+        .length;
+      return test;
     },
   },
   watch: {
