@@ -92,12 +92,12 @@
           </div>
         </div>
         <div class="flex flex-col gap-1">
-          <button
+          <app-button
             type="submit"
-            class="flex-auto p-2.5 bg-blue-600 rounded-full text-sky-50 hover:brightness-110 active:brightness-90"
+            :disabled="!letters && !marks && !difCase && !numbers"
           >
             Generate
-          </button>
+          </app-button>
         </div>
       </form>
     </main>
@@ -111,10 +111,11 @@
 import IconCopy from "./components/icons/IconCopy.vue";
 import IconDone from "./components/icons/IconDone.vue";
 import PasswordValidator from "./components/PasswordValidator.vue";
+import AppButton from "./components/AppButton.vue";
 
 export default {
   name: "App",
-  components: { PasswordValidator, IconDone, IconCopy },
+  components: { AppButton, PasswordValidator, IconDone, IconCopy },
   data() {
     return {
       password: "",
