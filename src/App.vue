@@ -38,17 +38,7 @@
           </button>
         </div>
         <password-validator :password="password" />
-        <div class="flex flex-col gap-2">
-          <label for="length">Length: {{ length }}</label>
-          <input
-            type="range"
-            id="length"
-            name="vol"
-            min="8"
-            max="64"
-            v-model="length"
-          />
-        </div>
+        <app-range id="length" name="length" label="Length" v-model="length" />
         <div class="flex flex-col">
           <app-checkbox
             name="letters"
@@ -94,10 +84,18 @@ import IconDone from "./components/icons/IconDone.vue";
 import PasswordValidator from "./components/PasswordValidator.vue";
 import AppButton from "./components/AppButton.vue";
 import AppCheckbox from "./components/AppCheckbox.vue";
+import AppRange from "@/components/icons/AppRange";
 
 export default {
   name: "App",
-  components: { AppCheckbox, AppButton, PasswordValidator, IconDone, IconCopy },
+  components: {
+    AppRange,
+    AppCheckbox,
+    AppButton,
+    PasswordValidator,
+    IconDone,
+    IconCopy,
+  },
   data() {
     return {
       password: "",
