@@ -88,7 +88,7 @@ export default {
 .pill {
   display: block;
   height: 5px;
-  background-color: #e2e8f0;
+  background-color: #eef3f2;
   border-radius: 2px;
 }
 </style>

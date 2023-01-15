@@ -63,6 +63,7 @@ export default {
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 50% 50%;
+  background-color: #eef3f2;
 }
 
 .checkbox:checked + .label::before {

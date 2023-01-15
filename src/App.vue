@@ -13,29 +13,14 @@
         class="flex flex-col gap-3 w-full max-w-xs m-2.5 p-5 rounded-2xl bg-slate-50"
         @submit.prevent="generatePassword"
       >
-        <label
-          for="password"
-          class="absolute overflow-hidden w-px h-px p-0 border-0"
-        >
-          Password
-        </label>
-        <div class="flex relative">
-          <input
-            type="text"
-            placeholder="Password"
-            id="password"
-            class="flex-auto p-3 pr-12 rounded-lg bg-slate-200 focus:bg-blue-600/10"
-            v-model="password"
-          />
-          <button
-            type="button"
-            class="group absolute inset-y-0 right-0 rounded-lg p-3 bg-transparent focus:outline-none focus:shadow-outline"
-            @click="copyPassword"
+        <div :class="$style.password_wrapper">
+          <password-input v-model="password" />
+          <password-copy-button
             :disabled="isCopyDisabled"
-          >
-            <icon-done v-if="isCopyDone" />
-            <icon-copy v-else />
-          </button>
+            :done="isCopyDone"
+            @click="copyPassword"
+            :class="$style.password_button"
+          />
         </div>
         <password-validator :password="password" />
         <app-range id="length" name="length" label="Length" v-model="length" />
@@ -79,30 +64,29 @@
 </template>
 
 <script>
-import IconCopy from "./components/icons/IconCopy.vue";
-import IconDone from "./components/icons/IconDone.vue";
+import PasswordInput from "./components/PasswordInput.vue";
 import PasswordValidator from "./components/PasswordValidator.vue";
 import AppButton from "./components/AppButton.vue";
 import AppCheckbox from "./components/AppCheckbox.vue";
-import AppRange from "@/components/icons/AppRange";
+import AppRange from "./components/AppRange";
+import PasswordCopyButton from "@/components/PasswordCopyButton";
 
 export default {
   name: "App",
   components: {
+    PasswordCopyButton,
+    PasswordInput,
+    PasswordValidator,
     AppRange,
     AppCheckbox,
     AppButton,
-    PasswordValidator,
-    IconDone,
-    IconCopy,
   },
   data() {
     return {
       password: "",
       length: 12,
-      isCopyDone: false,
       isCopyDisabled: true,
-      test: true,
+      isCopyDone: false,
       params: {
         letters: true,
         difCase: true,
@@ -137,9 +121,8 @@ export default {
   },
   computed: {
     disabledSubmit() {
-      const test = !Object.values(this.params).filter((value) => value === true)
+      return !Object.values(this.params).filter((value) => value === true)
         .length;
-      return test;
     },
   },
   watch: {
@@ -149,3 +132,14 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" module>
+.password_wrapper {
+  position: relative;
+}
+.password_button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+</style>
