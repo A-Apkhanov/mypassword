@@ -39,7 +39,7 @@ export default {
 .input {
   width: 100%;
   padding: 12px 48px 12px 12px;
-  background-color: #eef3f2;
+  background-color: #e4eae9;
   border-radius: 8px;
   border: 2px solid transparent;
   outline: none;
