@@ -60,7 +60,7 @@ export default {
   -webkit-appearance: none;
   width: 100%;
   height: 5px;
-  background: #eef3f2;
+  background: #e4eae9;
   border-radius: 2px;
   background-image: linear-gradient(#2a9d8f, #2a9d8f);
   background-repeat: no-repeat;

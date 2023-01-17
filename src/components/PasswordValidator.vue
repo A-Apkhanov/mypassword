@@ -1,8 +1,6 @@
 <template>
-  <div :class="$style.root">
-    <div :class="[$style.password_validity, modifierClass]">
-      <span v-for="i in 3" :key="i" :class="$style.pill" />
-    </div>
+  <div :class="[$style.password_validity, modifierClass]">
+    <span v-for="i in 3" :key="i" :class="$style.pill" />
   </div>
 </template>
 
@@ -62,11 +60,6 @@ export default {
 </script>
 
 <style lang="scss" module>
-.root {
-  display: flex;
-  flex-direction: column;
-}
-
 .password_validity {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -88,7 +81,7 @@ export default {
 .pill {
   display: block;
   height: 5px;
-  background-color: #eef3f2;
+  background-color: #e4eae9;
   border-radius: 2px;
 }
 </style>
